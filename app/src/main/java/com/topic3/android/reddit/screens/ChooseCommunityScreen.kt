@@ -2,15 +2,11 @@ package com.topic3.android.reddit.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -18,9 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.topic3.android.reddit.R
-import com.topic3.android.reddit.routing.BackButtonAction
 import com.topic3.android.reddit.routing.RedditRouter
 import com.topic3.android.reddit.viewmodel.MainViewModel
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import com.topic3.android.reddit.routing.BackButtonAction
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -37,14 +37,12 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
     var currentJob by remember { mutableStateOf<Job?>(null) }
     val activeColor = MaterialTheme.colors.onSurface
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit){
         viewModel.searchCommunities(searchedText)
     }
-
     Column {
         ChooseCommunityTopBar()
-        TextField(
-            value = searchedText,
+        TextField(value = searchedText,
             onValueChange = {
                 searchedText = it
                 currentJob?.cancel()
@@ -59,7 +57,8 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
                     contentDescription = stringResource(id = R.string.search)
                 )
             },
-            label = { Text(stringResource(R.string.search)) },
+            label = { Text(stringResource(R.string.search))
+            },
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
@@ -77,6 +76,17 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
     }
 }
 
+@Preview
+@Composable
+fun SearchedCommunitiesPreview(){
+    Column {
+        SearchedCommunities(
+            defaultCommunities,
+            null,
+            Modifier
+        )
+    }
+}
 
 @Composable
 fun SearchedCommunities(
@@ -84,11 +94,12 @@ fun SearchedCommunities(
     viewModel: MainViewModel?,
     modifier: Modifier = Modifier
 ) {
-    communities.forEach {
+    //TODO Add your code here
+    communities.forEach{
         Community(
             text = it,
             modifier = modifier,
-            onCommunityClicked = {
+            onCommunityClciked = {
                 viewModel?.selectedCommunity?.postValue(it)
                 RedditRouter.goBack()
             }
@@ -127,17 +138,3 @@ fun ChooseCommunityTopBar(modifier: Modifier = Modifier) {
             .background(Color.Blue)
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun SearchedCommunitiesPreview() {
-    Column {
-        SearchedCommunities(
-            defaultCommunities,
-            null,
-            Modifier
-        )
-    }
-}
-
-
