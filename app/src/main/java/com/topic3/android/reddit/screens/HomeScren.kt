@@ -66,3 +66,17 @@ fun HomeScreen(viewModel: MainViewModel) {
     }
 }
 
+private data class HomeScreenItem(
+    val type: HomeScreenItemType,
+    val post: PostModel? = null
+)
+
+private enum class HomeScreenItemType {
+    TRENDING,
+    POST
+}
+
+private data class TrendingTopicModel(
+    val text: String,
+    @DrawableRes val imageRes: Int = 0
+)
